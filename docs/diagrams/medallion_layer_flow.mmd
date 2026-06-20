@@ -1,0 +1,69 @@
+flowchart LR
+  subgraph Bronze[Bronze]
+    bronze_crm_accounts[bronze<br/>crm<br/>accounts]
+    bronze_crm_opportunities[bronze<br/>crm<br/>opportunities]
+    bronze_los_applications[bronze<br/>los<br/>applications]
+    bronze_los_facilities[bronze<br/>los<br/>facilities]
+    bronze_pricing_quotes[bronze<br/>pricing<br/>quotes]
+    bronze_risk_assessments[bronze<br/>risk<br/>assessments]
+    bronze_treasury_ftp_rates[bronze<br/>treasury<br/>ftp<br/>rates]
+    bronze_core_relationship_snapshot[bronze<br/>core<br/>relationship<br/>snapshot]
+    bronze_rm_activities[bronze<br/>rm<br/>activities]
+  end
+  subgraph Silver[Silver]
+    silver_customers[silver<br/>customers]
+    silver_deals[silver<br/>deals]
+    silver_facilities[silver<br/>facilities]
+    silver_pricing_cases[silver<br/>pricing<br/>cases]
+    silver_risk_assessments[silver<br/>risk<br/>assessments]
+    silver_relationship_snapshots[silver<br/>relationship<br/>snapshots]
+  end
+  subgraph Gold[Gold]
+    gold_facility_economics[gold<br/>facility<br/>economics]
+    gold_deal_economics[gold<br/>deal<br/>economics]
+    gold_deal_training_dataset[gold<br/>deal<br/>training<br/>dataset]
+    gold_active_deal_scoring_dataset[gold<br/>active<br/>deal<br/>scoring<br/>dataset]
+    gold_rm_deal_dashboard[gold<br/>rm<br/>deal<br/>dashboard]
+  end
+  subgraph Models_and_Applications[Models and Applications]
+    win_probability_model[win<br/>probability<br/>model]
+    pricing_guidance[pricing<br/>guidance]
+    rm_deal_cockpit[rm<br/>deal<br/>cockpit]
+  end
+  bronze_crm_accounts --> silver_customers
+  bronze_crm_accounts --> silver_relationship_snapshots
+  bronze_crm_opportunities --> silver_deals
+  bronze_los_applications --> silver_deals
+  bronze_los_applications --> silver_facilities
+  bronze_los_facilities --> silver_facilities
+  bronze_pricing_quotes --> silver_pricing_cases
+  bronze_risk_assessments --> silver_risk_assessments
+  bronze_treasury_ftp_rates --> gold_facility_economics
+  bronze_core_relationship_snapshot --> silver_relationship_snapshots
+  bronze_rm_activities --> silver_deals
+  bronze_rm_activities --> gold_deal_training_dataset
+  silver_customers --> silver_deals
+  silver_customers --> silver_relationship_snapshots
+  silver_customers --> gold_deal_training_dataset
+  silver_deals --> silver_facilities
+  silver_deals --> gold_deal_economics
+  silver_deals --> gold_deal_training_dataset
+  silver_facilities --> silver_pricing_cases
+  silver_facilities --> silver_risk_assessments
+  silver_facilities --> gold_facility_economics
+  silver_pricing_cases --> gold_facility_economics
+  silver_risk_assessments --> gold_facility_economics
+  silver_risk_assessments --> gold_deal_training_dataset
+  silver_relationship_snapshots --> gold_deal_training_dataset
+  silver_relationship_snapshots --> gold_active_deal_scoring_dataset
+  gold_facility_economics --> gold_deal_economics
+  gold_deal_economics --> gold_deal_training_dataset
+  gold_deal_economics --> gold_active_deal_scoring_dataset
+  gold_deal_economics --> gold_rm_deal_dashboard
+  gold_deal_training_dataset --> win_probability_model
+  gold_active_deal_scoring_dataset --> pricing_guidance
+  gold_active_deal_scoring_dataset --> rm_deal_cockpit
+  gold_rm_deal_dashboard --> rm_deal_cockpit
+  win_probability_model --> pricing_guidance
+  win_probability_model --> rm_deal_cockpit
+  pricing_guidance --> rm_deal_cockpit

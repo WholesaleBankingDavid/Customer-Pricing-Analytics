@@ -68,3 +68,5 @@ Lost reasons are generated from synthetic drivers such as price, structure, rela
 ## No Competitor Data
 
 The generator does not create competitor price, competitor margin, competitor bank, or similar fields. Pricing guidance is based on internal economics, internal guardrails, risk, relationship context, and historical commercial outcomes.
+
+For a detailed walkthrough of the generation logic and layer transformations, see `docs/data_generation_explained.md`.

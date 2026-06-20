@@ -1,0 +1,9 @@
+flowchart LR
+  gold_facility_economics[gold<br/>facility<br/>economics] --> gold_deal_economics[gold<br/>deal<br/>economics]
+  gold_deal_economics --> gold_deal_training_dataset[gold<br/>deal<br/>training<br/>dataset]
+  gold_deal_economics --> gold_active_deal_scoring_dataset[gold<br/>active<br/>deal<br/>scoring<br/>dataset]
+  gold_deal_training_dataset --> win_probability_model((win probability model))
+  gold_active_deal_scoring_dataset --> pricing_guidance[pricing guidance]
+  win_probability_model --> pricing_guidance
+  pricing_guidance --> gold_rm_deal_dashboard[gold<br/>RM deal<br/>dashboard]
+  gold_rm_deal_dashboard --> rm_deal_cockpit((RM deal cockpit))

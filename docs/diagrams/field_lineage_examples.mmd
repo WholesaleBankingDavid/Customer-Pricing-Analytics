@@ -1,0 +1,19 @@
+flowchart LR
+  bq_margin[bronze_pricing_quotes.offered_margin_bps] --> sp_margin[silver_pricing_cases.offered_margin_bps]
+  sp_margin --> gf_margin[gold_facility_economics.offered_margin_bps]
+  gf_margin --> gd_margin[gold_deal_economics.weighted_avg_margin_above_floor_bps]
+  gd_margin --> pricing_guidance[pricing_guidance]
+
+  crm_stage[bronze_crm_opportunities.stage_raw / lost_reason_raw] --> sd_outcome[silver_deals.deal_outcome]
+  los_status[bronze_los_applications.application_status_raw] --> sd_outcome
+  sd_outcome --> training_target[gold_deal_training_dataset.deal_outcome]
+  training_target --> win_probability_model[win_probability_model target]
+
+  gd_profit[gold_deal_economics.total_expected_profit_lifetime] --> expected_value[scoring expected_deal_value]
+  model_probability[model win_probability] --> expected_value
+  expected_value --> dashboard_priority[gold_rm_deal_dashboard.priority_rank]
+
+  guardrails[silver_pricing_cases.floor_margin_bps / target_margin_bps / stretch_margin_bps] --> facility_zone[gold_facility_economics.pricing_zone]
+  risk_margin[gold_facility_economics.risk_adjusted_margin_bps] --> facility_zone
+  facility_zone --> deal_zone[gold_deal_economics.deal_pricing_zone]
+  deal_zone --> cockpit[rm_deal_cockpit]
