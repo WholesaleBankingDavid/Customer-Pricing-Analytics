@@ -1,93 +1,141 @@
-# AI Driven Commercial Loan Pricing
+# Customer & Pricing Analytics for Wholesale Banking
 
+This repository contains an analytics MVP for Relationship Manager (RM) deal prioritization and pricing guidance in Wholesale Banking.
 
+The goal is to help RMs, pricing teams, and sales steering teams understand which active commercial-loan deals deserve attention, how likely a deal is to close, and whether facility-level pricing is inside an economically sensible guidance range.
 
-## Getting started
+The project is explicitly decision support. It does not use competitor data, does not copy real customer information into examples, and does not claim to calculate an automatically optimal price.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## MVP Use Case
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+**RM Deal Prioritization & Pricing Guidance**
 
-## Add your files
+The first realistic MVP focuses on:
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+- profiling available historical won/lost deal data
+- separating deal-level commercial decisions from facility-level economics
+- estimating baseline win probability for commercial outcomes
+- calculating facility and deal economics from internal pricing guardrails
+- ranking active deals by expected deal value and priority
+- assigning pricing zones: `Red`, `Guardrail`, `Recommended`, `Stretch`
 
+## Business Logic
+
+The target data model separates four concepts:
+
+- **Deal**: the commercial decision and negotiation object.
+- **Facility/Product**: the calculation object for economics and pricing guardrails.
+- **PricingCase**: the margin and fee calculation for one facility or scenario.
+- **DealAnalytics**: aggregated deal assessment with win probability, expected deal value, pricing zone, and priority score.
+
+Facility economics are aggregated to the deal level. A win/loss model estimates the probability of commercial success. Expected deal value combines both views:
+
+```text
+expected_deal_value = win_probability * total_expected_profit
 ```
-cd existing_repo
-git remote add origin https://gitlab.internal.d-fine.dev/prm-team/ai-driven-commercial-loan-pricing.git
-git branch -M main
-git push -uf origin main
+
+## Methodology
+
+The MVP starts with transparent analytics:
+
+1. Data profiling of the available Excel workbook.
+2. Descriptive win/loss analysis by product, rating, tenor, and margin buckets.
+3. A baseline logistic-regression model for explainable win probability.
+4. Facility-level pricing economics using internal cost and guardrail inputs.
+5. Deal-level prioritization based on expected economics and model output.
+
+The model result is not an optimal price. It is a guidance signal for human review and negotiation.
+
+## Repository Structure
+
+```text
+README.md
+docs/
+  use_case_vision.md
+  methodology.md
+  data_model.md
+  pricing_logic.md
+  modeling_approach.md
+  dashboard_concept.md
+  open_questions.md
+data/
+  data.xlsx
+  README.md
+  data_dictionary_template.md
+src/
+  customer_pricing_analytics/
+    config.py
+    data_loading.py
+    data_profiling.py
+    data_validation.py
+    feature_engineering.py
+    pricing_economics.py
+    model_training.py
+    model_evaluation.py
+    scoring.py
+notebooks/
+  01_data_profiling.ipynb
+  02_baseline_win_loss_analysis.ipynb
+  03_modeling_win_probability.ipynb
+tests/
+  test_pricing_economics.py
+  test_feature_engineering.py
+  test_data_validation.py
 ```
 
-## Integrate with your tools
+Existing raw notebooks are intentionally not deleted. They can be reviewed and migrated into the structured workflow over time.
 
-- [ ] [Set up project integrations](https://gitlab.internal.d-fine.dev/prm-team/ai-driven-commercial-loan-pricing/-/settings/integrations)
+## Setup
 
-## Collaborate with your team
+Create and activate a virtual environment:
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+```powershell
+python -m venv .venv
+.venv\Scripts\activate
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+```
 
-## Test and Deploy
+In this local workspace, a ready-to-use environment was also created as:
 
-Use the built-in continuous integration in GitLab.
+```powershell
+.venv-win\Scripts\activate
+```
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+## Running the MVP
 
-***
+Profile the workbook:
 
-# Editing this README
+```powershell
+python -c "from customer_pricing_analytics.data_profiling import profile_workbook; print(profile_workbook('data/data.xlsx'))"
+```
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+Run tests:
 
-## Suggestions for a good README
+```powershell
+pytest
+```
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+Open the starter notebooks:
 
-## Name
-Choose a self-explaining name for your project.
+```powershell
+jupyter notebook notebooks
+```
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+## Data And Privacy
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+- `data/data.xlsx` is kept as the existing source workbook and is not deleted.
+- New examples and tests use synthetic data only.
+- Do not commit real customer names, real counterparty identifiers, or confidential pricing decisions in examples, tests, or documentation.
+- The MVP must not use competitor pricing fields as model features or as pricing recommendations.
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+## Scope Boundaries
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+This repository does **not**:
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+- use competitive intelligence as an input to pricing decisions
+- automate final price setting
+- replace credit, risk, conduct, or human approval processes
+- claim that the mathematically optimal price has been calculated
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+It provides structured pricing guidance and deal prioritization for expert review.
