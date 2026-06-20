@@ -1,0 +1,15 @@
+flowchart TB
+  deal[Deal<br/>commercial decision and negotiation object]
+  facility[Facility/Product<br/>economics and pricing calculation object]
+  pricing_case[PricingCase<br/>price fee and guardrail version]
+  risk_assessment[RiskAssessment<br/>risk input]
+  facility_economics[FacilityEconomics<br/>economics per facility]
+  deal_economics[DealEconomics<br/>aggregated economics per deal]
+  deal --> facility
+  facility --> pricing_case
+  facility --> risk_assessment
+  pricing_case --> facility_economics
+  risk_assessment --> facility_economics
+  facility --> facility_economics
+  facility_economics --> deal_economics
+  deal --> deal_economics

@@ -61,3 +61,9 @@ CRM / LOS / Pricing / Risk / Treasury / Core
 ```
 
 Outcome is modeled at deal level. Pricing is calculated at facility and quote level. Deal economics aggregate facility economics for RM decision support.
+
+Generated Mermaid diagrams for this architecture are maintained under `docs/diagrams/` and can be regenerated with:
+
+```powershell
+python scripts/generate_data_model_diagrams.py --output-dir docs/diagrams
+```

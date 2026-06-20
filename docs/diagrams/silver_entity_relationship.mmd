@@ -1,0 +1,41 @@
+erDiagram
+  silver_customers ||--o{ silver_deals : owns
+  silver_deals ||--o{ silver_facilities : contains
+  silver_facilities ||--o{ silver_pricing_cases : priced_by
+  silver_facilities ||--o{ silver_risk_assessments : assessed_by
+  silver_customers ||--o{ silver_relationship_snapshots : has
+  silver_customers {
+    string customer_id PK
+    string crm_account_id
+    string customer_segment
+    string rm_id
+  }
+  silver_deals {
+    string deal_id PK
+    string customer_id FK
+    string deal_status
+    string deal_outcome
+  }
+  silver_facilities {
+    string facility_id PK
+    string deal_id FK
+    string product_type
+    float expected_utilized_volume
+  }
+  silver_pricing_cases {
+    string pricing_case_id PK
+    string facility_id FK
+    float offered_margin_bps
+    bool is_final_quote
+  }
+  silver_risk_assessments {
+    string risk_assessment_id PK
+    string facility_id FK
+    string rating
+    float pd
+  }
+  silver_relationship_snapshots {
+    string customer_id FK
+    date snapshot_month
+    float relationship_strength_score
+  }

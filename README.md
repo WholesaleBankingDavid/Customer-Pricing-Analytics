@@ -141,6 +141,16 @@ data/generated/
 
 `data/generated/` is ignored by Git. All generated records are synthetic. The generator deliberately creates realistic Bronze-layer data quality issues and then harmonizes them into Silver and Gold outputs.
 
+## Data Model Diagrams
+
+The repository includes generated Mermaid diagrams for the medallion data model, source systems, entity relationships, Gold marts, and field lineage.
+
+```powershell
+python scripts/generate_data_model_diagrams.py --output-dir docs/diagrams
+```
+
+See [docs/diagrams/README.md](docs/diagrams/README.md) for the generated diagram set and [docs/data_generation_explained.md](docs/data_generation_explained.md) for a detailed explanation of how the synthetic data is generated.
+
 ## Data And Privacy
 
 - `data/data.xlsx` is kept as the existing source workbook and is not deleted.
