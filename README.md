@@ -122,6 +122,25 @@ Open the starter notebooks:
 jupyter notebook notebooks
 ```
 
+## Generating Realistic Medallion Demo Data
+
+The repository includes a local synthetic data generator for a Bronze -> Silver -> Gold medallion flow. It simulates bank-style source systems and derives analytical marts for modeling and dashboards.
+
+```powershell
+python scripts/generate_medallion_demo_data.py --output-dir data/generated --n-customers 500 --n-opportunities 1500 --active-share 0.25 --random-state 42
+```
+
+Generated files are written to:
+
+```text
+data/generated/
+  bronze/
+  silver/
+  gold/
+```
+
+`data/generated/` is ignored by Git. All generated records are synthetic. The generator deliberately creates realistic Bronze-layer data quality issues and then harmonizes them into Silver and Gold outputs.
+
 ## Data And Privacy
 
 - `data/data.xlsx` is kept as the existing source workbook and is not deleted.
