@@ -29,6 +29,11 @@ def test_bronze_source_systems_contains_expected_sources():
     assert "Risk Engine" in diagram
     assert "Treasury" in diagram
     assert "Core Banking" in diagram
+    assert "Loan Origination System((" not in diagram
+    assert "Pricing Tool((" not in diagram
+    assert "Risk Engine((" not in diagram
+    assert "Core Banking((" not in diagram
+    assert "Loan_Origination_System((Loan Origination System))" in diagram
 
 
 def test_silver_erd_contains_required_relationships():

@@ -3,12 +3,17 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
+import re
 
 from customer_pricing_analytics.visualization.schema_registry import TableSchema, get_schema_registry
 
 
 def _node_id(name: str) -> str:
-    return name.replace("-", "_").replace(".", "_")
+    node_id = re.sub(r"[^0-9A-Za-z_]", "_", name)
+    node_id = re.sub(r"_+", "_", node_id).strip("_")
+    if node_id and node_id[0].isdigit():
+        node_id = f"n_{node_id}"
+    return node_id
 
 
 def _label(name: str) -> str:
