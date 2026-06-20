@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime
 
 import numpy as np
 import pandas as pd
@@ -432,16 +431,6 @@ def _make_activities(opps: pd.DataFrame, rng: np.random.Generator) -> tuple[pd.D
             )
             idx += 1
     return pd.DataFrame(rows), pd.DataFrame(activity_counts)
-
-
-def _standard_product_group(product_type: str) -> str:
-    if product_type in {"RCF", "Overdraft"}:
-        return "Committed Lines"
-    if product_type == "Term Loan":
-        return "Term Lending"
-    if product_type == "Guarantee":
-        return "Guarantee"
-    return "Trade"
 
 
 def _simulate_outcomes(
