@@ -1,0 +1,11 @@
+arviz
+ipykernel
+jupyter
+matplotlib
+numpy
+openpyxl
+pandas
+pymc
+pytest
+scikit-learn
+tqdm

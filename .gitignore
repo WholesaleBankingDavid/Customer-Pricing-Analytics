@@ -1,0 +1,16 @@
+.venv/
+.venv-win/
+.env
+.tmp/
+.pytest_cache/
+pytest-cache-files-*/
+__pycache__/
+.ipynb_checkpoints/
+*.parquet
+*.pkl
+*.joblib
+*.egg-info/
+outputs/
+models/
+data/processed/
+data/interim/
